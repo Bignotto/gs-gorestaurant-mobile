@@ -74,7 +74,7 @@ const Dashboard: React.FC = () => {
     async function loadCategories(): Promise<void> {
       try {
         const response = await api.get('/categories');
-        setFoods(response.data);
+        setCategories(response.data);
       } catch (error) {
         Alert.alert('Erro', `${error}`);
       }
@@ -84,7 +84,7 @@ const Dashboard: React.FC = () => {
   }, []);
 
   function handleSelectCategory(id: number): void {
-    // Select / deselect category
+    setSelectedCategory(id);
   }
 
   return (

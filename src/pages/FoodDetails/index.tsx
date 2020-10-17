@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useLayoutEffect,
 } from 'react';
-import { Image } from 'react-native';
+import { Alert, Image } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -73,34 +73,66 @@ const FoodDetails: React.FC = () => {
 
   useEffect(() => {
     async function loadFood(): Promise<void> {
-      // Load a specific food with extras based on routeParams id
+      try {
+        const response = await api.get(`/foods/${routeParams.id}`);
+        setFood(response.data);
+
+        setExtras(
+          response.data.extras.map((e: Extra) => {
+            return {
+              ...e,
+              quantity: 0,
+            };
+          }),
+        );
+      } catch (error) {
+        Alert.alert('Erro', `${error}`);
+      }
     }
 
     loadFood();
   }, [routeParams]);
 
   function handleIncrementExtra(id: number): void {
-    // Increment extra quantity
+    //TODO: Increment extra quantity
+    let extra = extras.filter(e => e.id === id);
+    extra[0].quantity += 1;
+
+    setExtras(extras.filter(e => e.id !== id).concat(extra));
   }
 
   function handleDecrementExtra(id: number): void {
-    // Decrement extra quantity
+    //TODO: Decrement extra quantity
+    let extra = extras.filter(e => e.id === id);
+    if (extra[0].quantity === 0) return;
+    extra[0].quantity -= 1;
+
+    setExtras(extras.filter(e => e.id !== id).concat(extra));
   }
 
   function handleIncrementFood(): void {
-    // Increment food quantity
+    //TODO: Increment food quantity
+    setFoodQuantity(foodQuantity + 1);
   }
 
   function handleDecrementFood(): void {
-    // Decrement food quantity
+    if (foodQuantity === 1) return;
+    setFoodQuantity(foodQuantity - 1);
+    //TODO: Decrement food quantity
   }
 
   const toggleFavorite = useCallback(() => {
-    // Toggle if food is favorite or not
+    //TODO: Toggle if food is favorite or not
+    setIsFavorite(!isFavorite);
   }, [isFavorite, food]);
 
   const cartTotal = useMemo(() => {
-    // Calculate cartTotal
+    //TODO: Calculate cartTotal
+    let total = food.price * foodQuantity;
+    extras.forEach(e => {
+      total += e.quantity * e.value;
+    });
+    return formatValue(total);
   }, [extras, food, foodQuantity]);
 
   async function handleFinishOrder(): Promise<void> {

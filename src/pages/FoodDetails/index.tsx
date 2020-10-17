@@ -94,7 +94,6 @@ const FoodDetails: React.FC = () => {
   }, [routeParams]);
 
   function handleIncrementExtra(id: number): void {
-    //TODO: Increment extra quantity
     let extra = extras.filter(e => e.id === id);
     extra[0].quantity += 1;
 
@@ -102,7 +101,6 @@ const FoodDetails: React.FC = () => {
   }
 
   function handleDecrementExtra(id: number): void {
-    //TODO: Decrement extra quantity
     let extra = extras.filter(e => e.id === id);
     if (extra[0].quantity === 0) return;
     extra[0].quantity -= 1;
@@ -111,23 +109,19 @@ const FoodDetails: React.FC = () => {
   }
 
   function handleIncrementFood(): void {
-    //TODO: Increment food quantity
     setFoodQuantity(foodQuantity + 1);
   }
 
   function handleDecrementFood(): void {
     if (foodQuantity === 1) return;
     setFoodQuantity(foodQuantity - 1);
-    //TODO: Decrement food quantity
   }
 
   const toggleFavorite = useCallback(() => {
-    //TODO: Toggle if food is favorite or not
     setIsFavorite(!isFavorite);
   }, [isFavorite, food]);
 
   const cartTotal = useMemo(() => {
-    //TODO: Calculate cartTotal
     let total = food.price * foodQuantity;
     extras.forEach(e => {
       total += e.quantity * e.value;
